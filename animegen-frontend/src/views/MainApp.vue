@@ -1,19 +1,41 @@
 <template>
+        <div class="user-info">
+        <span class="username">{{ getUsername() }}</span>
+        <button @click="logout" class="logout-button">Logout</button>
+      </div>
   <div class="container">
+  
     <div class="prompt-content">
+
+
       <div class="input-section">
         <label for="prompt" class="label">Prompt:</label>
         <input v-model="prompt" id="prompt" type="text" placeholder="Enter Text Prompt" class="styled-input">
 
         <label for="negativePrompt" class="label">Negative Prompt:</label>
         <input v-model="negativePrompt" id="negativePrompt" type="text" placeholder="Negative Prompt" class="styled-input">
-        </div>
+
         <button @click="generateImages" :disabled="loading" class="generate-button">Generate Images</button>
       </div>
-
     </div>
-    <div class="image-container">
-      <img ref="generatedImage" alt="Generated Image" class="generated-image">
+
+    <div class="tab-sections">
+      <div class="tab" @click="switchTab('community')">Community Creations</div>
+      <div class="tab" @click="switchTab('my')">My Creations</div>
+    </div>
+
+    <div class="image-gallery" v-if="selectedTab === 'community'">
+      <!-- Dummy images, replace with API data -->
+      <div v-for="image in communityImages" :key="image.id" class="gallery-item">
+        <img :src="image.url" alt="Community Creation" class="gallery-image">
+      </div>
+    </div>
+
+    <div class="image-gallery" v-if="selectedTab === 'my'">
+      <!-- Dummy images, replace with API data -->
+      <div v-for="image in myImages" :key="image.id" class="gallery-item">
+        <img :src="image.url" alt="My Creation" class="gallery-image">
+      </div>
     </div>
   </div>
 </template>
@@ -28,6 +50,9 @@ export default {
       prompt: '',
       negativePrompt: '',
       accessToken: localStorage.getItem('accessToken') || '',
+      selectedTab: 'community',
+      communityImages: [], // Replace with API data
+      myImages: [], // Replace with API data
     };
   },
   computed: {
@@ -58,8 +83,15 @@ export default {
         this.loading = false;
       }
     },
-    toggleCustomize() {
-      this.isCustomizing = !this.isCustomizing;
+    switchTab(tab) {
+      this.selectedTab = tab;
+    },
+    logout() {
+      // Implement logout logic here
+    },
+    getUsername() {
+      // Replace with actual username retrieval logic
+      return 'JohnDoe';
     },
   },
 };
@@ -83,29 +115,49 @@ export default {
   margin: 20px;
   color: #ffffff;
   background-color: #1f1c1c;
+  padding: 20px;
+  border-radius: 10px;
 }
 
-.input-section input {
-  width: 100%;
-  padding: 12px;
-  font-size: 14px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-.label {
-  align-items: left;
-  font-size: 20px;
-  width: 100%;
+.user-info {
   display: flex;
+  justify-content: space-between;
+  align-items: left;
+  margin-bottom: 20px;
+}
+
+.username {
+  font-size: 18px;
+  color: #45a049;
+}
+
+.logout-button {
+  background-color: #d9534f;
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.logout-button:hover {
+  background-color: #c9302c;
+}
+
+.input-section {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
 }
 
 .styled-input {
   width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #4CAF50;
+  padding: 12px;
+  font-size: 16px;
+  border: 1px solid #45a049;
   border-radius: 4px;
+  margin-bottom: 10px;
   transition: border-color 0.3s;
 }
 
@@ -113,25 +165,16 @@ export default {
   border-color: #45a049;
 }
 
-.image-container {
-  max-width: 400px;
-  margin: auto;
-  margin-left: 20px;
-}
-
-.generated-image {
-  max-width: 100%;
-  transition: transform 0.3s;
-}
-
-.generated-image:hover {
-  transform: scale(1.1);
+.label {
+  font-size: 16px;
+  color: #ffffff;
+  margin-bottom: 5px;
 }
 
 .generate-button {
   background-color: #2196F3;
   color: white;
-  padding: 10px 15px;
+  padding: 12px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -146,5 +189,45 @@ export default {
 
 .generate-button:hover {
   background-color: #0b7dda;
+}
+
+.tab-sections {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.tab {
+  flex: 1;
+  padding: 10px;
+  text-align: center;
+  background-color: #1f1c1c;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.tab:hover {
+  background-color: #454141;
+}
+
+.image-gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.gallery-item {
+  flex: 1 0 30%; /* Adjust as needed */
+}
+
+.gallery-image {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  transition: transform 0.3s;
+}
+
+.gallery-image:hover {
+  transform: scale(1.05);
 }
 </style>
