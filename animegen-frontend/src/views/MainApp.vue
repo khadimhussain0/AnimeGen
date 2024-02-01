@@ -1,10 +1,12 @@
 <template>
-        <div class="user-info">
+    <div class="header">
+      <div class="logo">Your Logo</div>
+      <div class="user-info">
         <span class="username">{{ getUsername() }}</span>
         <button @click="logout" class="logout-button">Logout</button>
       </div>
+    </div>
   <div class="container">
-  
     <div class="prompt-content">
 
 
@@ -98,48 +100,65 @@ export default {
 </script>
 
 <style scoped>
-.container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background-color: #0d0a0a;
-  margin: 50px;
-  border-radius: 20px;
-}
+  body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #101010;
+  }
 
-.prompt-content {
-  display: flex;
-  flex-direction: column;
-  align-items: left;
-  margin: 20px;
-  color: #ffffff;
-  background-color: #1f1c1c;
-  padding: 20px;
-  border-radius: 10px;
-}
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #1f1f1f;
+  }
 
-.user-info {
-  display: flex;
-  justify-content: space-between;
-  align-items: left;
-  margin-bottom: 20px;
-}
+  .user-info {
+    display: flex;
+    align-items: center;
+  }
 
-.username {
-  font-size: 18px;
-  color: #45a049;
-}
+  .username {
+    font-size: 18px;
+    color: #45a049;
+    margin-right: 10px;
+  }
 
-.logout-button {
-  background-color: #d9534f;
-  color: white;
-  padding: 8px 12px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
+  .logout-button {
+    background-color: #d9534f;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  .logout-button:hover {
+    background-color: #c9302c;
+  }
+
+  .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
+    background-color: #0d0a0a;
+    margin: 50px;
+    border-radius: 20px;
+  }
+
+  .prompt-content {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    margin: 20px;
+    color: #ffffff;
+    background-color: #1f1c1c;
+    padding: 20px;
+    border-radius: 10px;
+  }
 
 .logout-button:hover {
   background-color: #c9302c;
