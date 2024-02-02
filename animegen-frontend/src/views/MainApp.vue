@@ -19,10 +19,19 @@
 
 
     <div class="tab-sections">
-      <div class="tab" @click="switchTab('community')">Community Creations</div>
-      <div class="tab" @click="switchTab('my-creations')">My Creations</div>
+    <div
+      :class="tabClasses['community']"
+      @click="switchTab('community')"
+    >
+      Community Creations
     </div>
-
+    <div
+      :class="tabClasses['my-creations']"
+      @click="switchTab('my-creations')"
+    >
+      My Creations
+    </div>
+  </div>
     <div class="image-gallery" v-if="selectedTab === 'community'">
       <div v-for="image in communityImages" :key="image.id" class="gallery-item">
         <img :src="image.url" alt="Community Creation" class="gallery-image">
@@ -50,6 +59,10 @@ export default {
       isLoggedIn: Boolean(localStorage.getItem('accessToken')), // Add isLoggedIn variable
       username: '',
       selectedTab: 'community',
+      tabClasses: {
+        community: 'tab1',
+        'my-creations': 'tab2',
+      },
       communityImages: [{"url":"https://picsum.photos/200/300", "key":2},{"url":"https://picsum.photos/500/300", "key":1}],
       myImages: [{"url":"https://picsum.photos/500/300", "key":2},{"url":"https://picsum.photos/500/300", "key":1}],
     };
@@ -82,6 +95,14 @@ export default {
     },
     switchTab(tab) {
       this.selectedTab = tab;
+
+      // Reset classes for all tabs
+      Object.keys(this.tabClasses).forEach((key) => {
+        this.tabClasses[key] = 'tab2';
+      });
+
+      // Set the selected tab's class to 'tab-selected'
+      this.tabClasses[tab] = 'tab-selected';
     },
     logout() {
       localStorage.removeItem('accessToken');
@@ -142,7 +163,6 @@ body {
   border-bottom-left-radius: 100px;
   padding: 10px;
 }
-
 .logout-button {
   background-color: #d9534f;
   color: white;
@@ -167,7 +187,7 @@ body {
   flex-direction: column;
   align-items: center;
   background-color: #0f0d10;
-  margin: 50px;
+  margin: 10px;
   border-radius: 20px;
 }
 
@@ -227,20 +247,39 @@ body {
   margin: 10px;
 }
 
-.tab {
+.tab1 {
   flex: 1;
   margin: 5px;
   padding: 10px;
   text-align: center;
-  background-color: #1f1c1c;
+  background: #454141;;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  border-radius: 30px;
+}
+.tab2 {
+  flex: 1;
+  margin: 5px;
+  padding: 10px;
+  text-align: center;
+  background: #454141;;
   color: #ffffff;
   cursor: pointer;
   transition: background-color 0.3s;
   border-radius: 30px;
 }
 
-.tab:hover {
-  background-color: #454141;
+.tab-selected {
+  flex: 1;
+  margin: 5px;
+  padding: 10px;
+  text-align: center;
+  background: linear-gradient(90deg, #27ed09, #06d429);
+  color: #ffffff;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  border-radius: 30px;
 }
 
 
