@@ -54,10 +54,8 @@ export default {
       myImages: [{"url":"https://picsum.photos/500/300", "key":2},{"url":"https://picsum.photos/500/300", "key":1}],
     };
   },
-  computed: {
-    getusername(){
-      this.username = getUsername();
-    }
+  mounted(){
+    this.getUsername();
   },
   methods: {
     async generateImages() {
@@ -136,21 +134,26 @@ body {
 }
 
 .username {
-  font-size: 18px;
+  font-size: 20px;
   color: #45a049;
-  margin-right: 10px;
+  /* margin-right: 10px; */
+  background: linear-gradient(90deg, #f441a5, #03a9f4);
+  border-top-left-radius: 100px;
+  border-bottom-left-radius: 100px;
+  padding: 10px;
 }
 
 .logout-button {
   background-color: #d9534f;
   color: white;
-  padding: 8px 12px;
-  height: 40px;
+  padding: 10px;
+  height: 43px;
   width: 80px;
   margin-right: 10px;
   font-size: medium;
   border: none;
-  border-radius: 4px;
+  border-top-right-radius: 100px;
+  border-bottom-right-radius: 100px;
   cursor: pointer;
   transition: background-color 0.3s;
 }
