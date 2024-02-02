@@ -15,4 +15,5 @@ class Prompt(Base):
     guidance_scale = Column(Integer)
     num_inference_steps = Column(Integer, nullable=False)
 
-    # user = relationship("User", back_populates="prompt")
+    user = relationship("User", back_populates="prompts")
+    images = relationship("Image", back_populates="prompt")

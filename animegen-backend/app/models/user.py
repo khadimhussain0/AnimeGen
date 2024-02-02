@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer, String
+from sqlalchemy.orm import relationship
 from app.core.database import Base
 from passlib.context import CryptContext
 
@@ -14,6 +15,9 @@ class User(Base):
     lastname = Column(String, index=True, default="")
     email = Column(String, unique=True, index=True, nullable=False)
     hashed_password = Column(String, nullable=False)
+
+    prompts = relationship("Prompt", back_populates="user")
+    images = relationship("Image", back_populates="user")
 
     def set_password(self, password: str):
         self.hashed_password = pwd_context.hash(password)

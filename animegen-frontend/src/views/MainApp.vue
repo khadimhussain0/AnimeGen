@@ -8,8 +8,6 @@
   </div>
   <div class="container">
 
-
-
     <div class="input-section">
       <input v-model="prompt" id="prompt" type="text" placeholder="Enter Text Prompt" class="styled-input">
       <input v-model="negativePrompt" id="negativePrompt" type="text" placeholder="Negative Prompt" class="styled-input">
