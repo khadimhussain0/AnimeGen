@@ -13,6 +13,8 @@ class UserCreate(BaseModel):
 
 class UserRead(BaseModel):
     id: int
+    firstname: str
+    lastname: str
 
     class Config:
         orm_mode = True

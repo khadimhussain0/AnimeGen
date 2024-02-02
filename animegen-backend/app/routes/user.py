@@ -24,6 +24,15 @@ def create_user(user: UserCreate, db: Session = Depends(get_db)):
     return db_user
 
 
+@router.get("/get_username", response_model=UserRead)
+def get_username(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    db_user = db.query(User).filter(User.id == current_user.id).first()
+    if db_user is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    print("at return")
+    return db_user
+
+
 @router.get("/{user_id}", response_model=UserRead)
 def read_user(user_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     if current_user.id != user_id:
