@@ -54,7 +54,7 @@ export default {
       accessToken: localStorage.getItem('accessToken') || '',
       selectedTab: 'community',
       communityImages: [], // Replace with API data
-      myImages: [], // Replace with API data
+      myImages: [{"url":"https://picsum.photos/200/300", "key":2,"url":"https://picsum.photos/200/300", "key":1,"url":"https://picsum.photos/200/300", "key":1,"url":"https://picsum.photos/200/300", "key":1,"url":"https://picsum.photos/200/300", "key":1,"url":"https://picsum.photos/200/300", "key":1,"url":"https://picsum.photos/200/300", "key":1,"url":"https://picsum.photos/200/300", "key":1}], // Replace with API data
     };
   },
   computed: {
@@ -141,18 +141,23 @@ export default {
 
   .container {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 90vh;
-    background-color: #0d0a0a;
+    flex-direction: column; /* Adjusted to column layout */
+    align-items: center; /* Center items vertically */
+    background-color: #8f03b6;
     margin: 50px;
     border-radius: 20px;
   }
 
+.input {
+	font-family: inherit;
+	line-height:inherit;
+	color:#2e3750;
+	min-width:12em;
+}
   .prompt-content {
     display: flex;
     flex-direction: column;
-    align-items: left;
+    align-items: center; /* Center items horizontally */
     margin: 20px;
     color: #ffffff;
     background-color: #1f1c1c;
@@ -160,23 +165,17 @@ export default {
     border-radius: 10px;
   }
 
-.logout-button:hover {
-  background-color: #c9302c;
-}
-
-.input-section {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 20px;
-}
-
-.styled-input {
+  .input-section {
+    width: 100%; /* Adjusted to full width */
+    margin-bottom: 20px;
+  }
+  .styled-input {
   width: 100%;
   padding: 12px;
   font-size: 16px;
   border: 1px solid #45a049;
   border-radius: 4px;
-  margin-bottom: 10px;
+  /* margin-bottom: 10px; */
   transition: border-color 0.3s;
 }
 
@@ -187,7 +186,7 @@ export default {
 .label {
   font-size: 16px;
   color: #ffffff;
-  margin-bottom: 5px;
+  /* margin-bottom: 5px; */
 }
 
 .generate-button {
@@ -210,24 +209,26 @@ export default {
   background-color: #0b7dda;
 }
 
-.tab-sections {
-  display: flex;
-  margin-bottom: 10px;
-}
+  .tab-sections {
+    display: flex;
+    justify-content: center; /* Center tabs horizontally */
+    margin-top: 10px; /* Adjusted to create space between prompt-content and tabs */
+  }
 
-.tab {
-  flex: 1;
-  padding: 10px;
-  text-align: center;
-  background-color: #1f1c1c;
-  color: #ffffff;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
+  .tab {
+    flex: 1;
+    padding: 10px;
+    text-align: center;
+    background-color: #1f1c1c;
+    color: #ffffff;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
 
-.tab:hover {
-  background-color: #454141;
-}
+  .tab:hover {
+    background-color: #454141;
+  }
+
 
 .image-gallery {
   display: flex;
