@@ -20,7 +20,7 @@
 
     <div class="tab-sections">
       <div class="tab" @click="switchTab('community')">Community Creations</div>
-      <div class="tab" @click="switchTab('my')">My Creations</div>
+      <div class="tab" @click="switchTab('my-creations')">My Creations</div>
     </div>
 
     <div class="image-gallery" v-if="selectedTab === 'community'">
@@ -30,7 +30,7 @@
       </div>
     </div>
 
-    <div class="image-gallery" v-if="selectedTab === 'my'">
+    <div class="image-gallery" v-if="selectedTab === 'my-creations'">
       <!-- Dummy images, replace with API data -->
       <div v-for="image in myImages" :key="image.id" class="gallery-item">
         <img :src="image.url" alt="My Creation" class="gallery-image">
@@ -51,7 +51,7 @@ export default {
       accessToken: localStorage.getItem('accessToken') || '',
       selectedTab: 'community',
       communityImages: [], // Replace with API data
-      myImages: [{"url":"https://picsum.photos/200/300", "key":2,"url":"https://picsum.photos/200/300", "key":1,"url":"https://picsum.photos/200/300", "key":1,"url":"https://picsum.photos/200/300", "key":1,"url":"https://picsum.photos/200/300", "key":1,"url":"https://picsum.photos/200/300", "key":1,"url":"https://picsum.photos/200/300", "key":1,"url":"https://picsum.photos/200/300", "key":1}], // Replace with API data
+      myImages: [{"url":"https://picsum.photos/500/300", "key":2,"url":"https://picsum.photos/500/300", "key":1}], // Replace with API data
     };
   },
   computed: {
@@ -86,10 +86,8 @@ export default {
       this.selectedTab = tab;
     },
     logout() {
-      // Implement logout logic here
     },
     getUsername() {
-      // Replace with actual username retrieval logic
       return 'JohnDoe';
     },
   },
@@ -144,20 +142,8 @@ export default {
     margin: 50px;
     border-radius: 20px;
   }
-  .prompt-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 20px;
-    color: #ffffff;
-    background-color: #1f1c1c;
-    padding: 20px;
-    border-radius: 10px;
-  }
 
   .input-section {
-    /* width: 100%; */
-    /* margin: 20px; */
     margin-left: 200px;
     margin-right: 200px;
 
@@ -173,6 +159,10 @@ export default {
   margin-top: 10px;
   margin-bottom: 10px;
   transition: border-color 0.3s;
+}
+
+.styled-input::placeholder {
+  color: white;
 }
 
 .styled-input:focus {
@@ -201,8 +191,8 @@ export default {
 
   .tab-sections {
     display: flex;
-    justify-content: center; /* Center tabs horizontally */
-    margin-top: 10px; /* Adjusted to create space between prompt-content and tabs */
+    justify-content: center;
+    margin-top: 10px;
     width: 99%;
     padding: 10px;
     margin: 10px;
@@ -232,7 +222,7 @@ export default {
 }
 
 .gallery-item {
-  flex: 1 0 30%; /* Adjust as needed */
+  flex: 1 0 30%;
 }
 
 .gallery-image {
