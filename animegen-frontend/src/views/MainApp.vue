@@ -7,19 +7,16 @@
       </div>
     </div>
   <div class="container">
-    <div class="prompt-content">
+
 
 
       <div class="input-section">
-        <label for="prompt" class="label">Prompt:</label>
         <input v-model="prompt" id="prompt" type="text" placeholder="Enter Text Prompt" class="styled-input">
-
-        <label for="negativePrompt" class="label">Negative Prompt:</label>
         <input v-model="negativePrompt" id="negativePrompt" type="text" placeholder="Negative Prompt" class="styled-input">
 
         <button @click="generateImages" :disabled="loading" class="generate-button">Generate Images</button>
       </div>
-    </div>
+
 
     <div class="tab-sections">
       <div class="tab" @click="switchTab('community')">Community Creations</div>
@@ -141,23 +138,16 @@ export default {
 
   .container {
     display: flex;
-    flex-direction: column; /* Adjusted to column layout */
-    align-items: center; /* Center items vertically */
-    background-color: #8f03b6;
+    flex-direction: column; 
+    align-items: center; 
+    background-color: #0f0d10;
     margin: 50px;
     border-radius: 20px;
   }
-
-.input {
-	font-family: inherit;
-	line-height:inherit;
-	color:#2e3750;
-	min-width:12em;
-}
   .prompt-content {
     display: flex;
     flex-direction: column;
-    align-items: center; /* Center items horizontally */
+    align-items: center;
     margin: 20px;
     color: #ffffff;
     background-color: #1f1c1c;
@@ -166,27 +156,27 @@ export default {
   }
 
   .input-section {
-    width: 100%; /* Adjusted to full width */
-    margin-bottom: 20px;
+    /* width: 100%; */
+    /* margin: 20px; */
+    margin-left: 200px;
+    margin-right: 200px;
+
   }
   .styled-input {
   width: 100%;
   padding: 12px;
-  font-size: 16px;
-  border: 1px solid #45a049;
-  border-radius: 4px;
-  /* margin-bottom: 10px; */
+  color: white;
+  border: none;
+  font-size: 15px;
+  background: linear-gradient(90deg,#f441a5, #03a9f4);
+  border-radius: 40px;
+  margin-top: 10px;
+  margin-bottom: 10px;
   transition: border-color 0.3s;
 }
 
 .styled-input:focus {
-  border-color: #45a049;
-}
-
-.label {
-  font-size: 16px;
-  color: #ffffff;
-  /* margin-bottom: 5px; */
+  border-color: #000000;
 }
 
 .generate-button {
@@ -194,9 +184,13 @@ export default {
   color: white;
   padding: 12px;
   border: none;
-  border-radius: 4px;
+  border-radius: 50px;
+  height: 50px;
+  width: 150px;
   cursor: pointer;
   transition: background-color 0.3s;
+  font-size: 15px;
+  background: linear-gradient(90deg, #f441a5, #03a9f4);
 }
 
 .generate-button:disabled {
@@ -205,24 +199,25 @@ export default {
   cursor: not-allowed;
 }
 
-.generate-button:hover {
-  background-color: #0b7dda;
-}
-
   .tab-sections {
     display: flex;
     justify-content: center; /* Center tabs horizontally */
     margin-top: 10px; /* Adjusted to create space between prompt-content and tabs */
+    width: 99%;
+    padding: 10px;
+    margin: 10px;
   }
 
   .tab {
     flex: 1;
+    margin: 5px;
     padding: 10px;
     text-align: center;
     background-color: #1f1c1c;
     color: #ffffff;
     cursor: pointer;
     transition: background-color 0.3s;
+    border-radius: 30px;
   }
 
   .tab:hover {
