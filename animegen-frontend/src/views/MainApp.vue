@@ -3,6 +3,7 @@
     <div class="logo"><img src="../assets/animegen.png" alt="AnimeGen" width="64" height="64"
         style="border-radius: 30px; margin-left: 3px;"></div>
     <div class="user-info">
+      <span class="credits" @click="console.log('credits')"> 🪙{{ credits }} </span>
       <span class="username">{{ username }}</span>
       <button @click="logout" class="logout-button">Logout</button>
     </div>
@@ -83,6 +84,7 @@ export default {
       accessToken: localStorage.getItem('accessToken') || '',
       isLoggedIn: Boolean(localStorage.getItem('accessToken')), // Add isLoggedIn variable
       username: '',
+      credits: 45,
       selectedTab: 'community',
       likedImages: [],
       tabClasses: {
@@ -219,6 +221,15 @@ body {
   padding: 10px;
 }
 
+.credits {
+  font-size: 18;
+  color: #020202;
+  /* margin-right: 10px; */
+  background: linear-gradient(90deg, #f441a5, #03a9f4);
+  border-radius: 50px;
+  padding: 10px;
+  margin-right: 20px;
+}
 .logout-button {
   background-color: #d9534f;
   color: white;
