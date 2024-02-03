@@ -35,6 +35,25 @@ def get_user_images(
         raise HTTPException(status_code=500, detail=f"An error occurred: {e}")
 
 
+@router.get("/community", response_model=GenerateResponse)
+def get_community_images(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    try:
+        user_images = db.query(Image).filter_by(is_community=True).all()
+        images_info = []
+        for i, image in enumerate(user_images):
+            filename = f"{image.filename}{image.separater}{image.uuid}.{image.extension}"
+            url = f"{SERVER_URL}/images/api/v1/{filename}"
+            images_info.append({"filename": filename, "url": url, "key": image.id})
+
+        return GenerateResponse(message="Fetched all images.", images=images_info)
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"An error occurred: {e}")
+
+
 @router.get("/api/v1/{filename}")
 def serve_image(filename: str):
     try:
