@@ -10,8 +10,8 @@
   <div class="container">
 
     <div class="input-section">
-      <input v-model="prompt" id="prompt" type="text" placeholder="Enter Text Prompt" class="styled-input">
-      <input v-model="negativePrompt" id="negativePrompt" type="text" placeholder="Negative Prompt" class="styled-input">
+      <input v-model="prompt" id="prompt" type="text" placeholder="Enter Text Prompt" class="styled-input" autocomplete="off">
+      <input v-model="negativePrompt" id="negativePrompt" type="text" placeholder="Negative Prompt" class="styled-input" autocomplete="off">
 
       <button @click="generateImages" :disabled="loading" class="generate-button">Generate Images</button>
     </div>
@@ -63,7 +63,7 @@ export default {
     };
   },
   mounted() {
-    this.getUsername();
+    this.fetchUsername();
   },
   methods: {
     async generateImages() {
@@ -96,28 +96,19 @@ export default {
       });
       this.tabClasses[tab] = 'tab-selected';
     },
+    async fetchUsername() {
+      try {
+        this.username = await getUsername(this.accessToken);
+      } catch (error) {
+        console.log(error)
+        return "User"
+      }
+    },
     logout() {
       localStorage.removeItem('accessToken');
       this.isLoggedIn = false;
       this.$router.push('/auth');
     },
-    getUsername() {
-      axios.get('http://localhost:8000/user/get_username', {
-        headers: {
-          Authorization: `Bearer ${this.accessToken}`
-        }
-      })
-        .then(response => {
-          const fullName = `${response.data.firstname} ${response.data.lastname}`;
-          this.username = fullName
-          console.log(fullName)
-          console.log(this.username)
-        })
-        .catch(error => {
-          console.error('Error during fetching username:', error.message);
-          throw error;
-        });
-    }
   },
 };
 </script>

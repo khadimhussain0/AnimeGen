@@ -13,8 +13,6 @@ const getUsername = async function (accessToken) {
   } catch (error) {
     console.error('Error during fetching username:', error.message);
     throw error;
-  } finally{
-    return "   "
   }
 };
 
