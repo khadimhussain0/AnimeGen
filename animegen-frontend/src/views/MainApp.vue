@@ -12,7 +12,7 @@
 
     <div class="input-section">
       <input v-model="prompt" id="prompt" type="text" placeholder="Enter Text Prompt" class="styled-input"
-        autocomplete="off">
+        autocomplete="off" required>
       <input v-model="negativePrompt" id="negativePrompt" type="text" placeholder="Negative Prompt" class="styled-input"
         autocomplete="off">
 
@@ -69,15 +69,23 @@
       </div>
     </div>
   </div>
+  <notification-modal :show="showNotification" :message="notificationMessage" :notification-type="notificationType"
+    @close="hideNotification" />
 </template>
 
 <script>
+import NotificationModal from '@/components/NotificationModal.vue';
+import NotificationMixin from '@/mixins/notificationMixin.js';
 import { generateImages, fetchCommunityImages } from '../services/image_service';
 import { getUsername } from '../services/utils';
 
 export default {
+  mixins: [NotificationMixin],
   data() {
     return {
+      showNotification: false,
+      notificationMessage: '',
+      notificationType: 'info',
       loading: false,
       prompt: '',
       negativePrompt: '',
@@ -100,6 +108,10 @@ export default {
   },
   methods: {
     async generateImages() {
+      if (this.prompt===""){
+        console.log("Please add prompt")
+        this.showNotificationModal('info', 'Please Enter Text Prompt');
+      }else{
       this.loading = true;
 
       try {
@@ -110,7 +122,7 @@ export default {
       } finally {
         this.loading = false;
       }
-    },
+    }},
     async fetchCommunityImages() {
       this.loading = true;
 
