@@ -32,15 +32,25 @@
     </div>
 
     <div class="image-gallery" v-if="selectedTab === 'my-creations'">
-      <div v-for="image in myImages" :key="image.id" class="gallery-item">
-        <img :src="image.url" alt="My Creation" class="gallery-image">
-      </div>
+    <!-- Display Images -->
+    <div v-for="image in myImages" :key="image.id">
+      <img :src="image.url" alt="image.id">
+
+      <!-- Like Button -->
+      <button @click="likeImage(image.id)" class="like-button">
+        ❤️
+      </button>
+
+      <!-- Download Button -->
+      <button @click="downloadImage(image.url)" class="download-button">
+        📥
+      </button>
+    </div>
     </div>
   </div>
 </template>
 
 <script>
-import axios from 'axios';
 import { generateImages, fetchCommunityImages } from '../services/image_service';
 import { getUsername } from '../services/utils';
 
@@ -87,6 +97,34 @@ export default {
         console.error("Error generating images:", error);
       } finally {
         this.loading = false;
+      }
+    },
+    async likeImage(imageId) {
+      try {
+        const isSuccess = await likeImage(imageId, this.accessToken);
+
+        if (isSuccess) {
+          // Add imageId to likedImages array
+          this.likedImages.push(imageId);
+        }
+      } catch (error) {
+        // Handle error as needed
+      }
+    },
+
+    async downloadImage(imageUrl) {
+      try {
+        const response = await fetch(imageUrl);
+        const blob = await response.blob();
+
+        // Create a link element with download attribute and trigger a click event
+        const link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.download = 'downloaded_image.png';
+        link.click();
+      } catch (error) {
+        console.error('Error downloading image:', error);
+        // Handle error as needed
       }
     },
     switchTab(tab) {
@@ -288,4 +326,6 @@ body {
 .gallery-image:hover {
   transform: scale(1.05);
 }
+
+
 </style>

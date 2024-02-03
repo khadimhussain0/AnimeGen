@@ -16,4 +16,20 @@ const getUsername = async function (accessToken) {
   }
 };
 
-export { getUsername };
+
+const likeImage = async function (imageId, accessToken) {
+  try {
+    const response = await axios.post(`http://localhost:8000/image/like/${imageId}`, null, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    return response.data.success; // Assuming the server responds with success field
+  } catch (error) {
+    console.error('Error liking image:', error);
+    throw error;
+  }
+};
+
+export { getUsername, likeImage };
