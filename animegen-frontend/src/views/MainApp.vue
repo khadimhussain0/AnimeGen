@@ -35,7 +35,7 @@
             <img :src="image.url" alt="image.id" class="rounded-image">
           </div>
           <!-- Like Button -->
-          <button @click="likeImage(image.id)" class="like-button">
+          <button @click="likeImage(image.id)" class="like-button" :class="{ 'liked': likedImages.includes(image.id) }">
             ❤️
           </button>
 
@@ -84,6 +84,7 @@ export default {
       isLoggedIn: Boolean(localStorage.getItem('accessToken')), // Add isLoggedIn variable
       username: '',
       selectedTab: 'community',
+      likedImages: [],
       tabClasses: {
         community: 'tab1',
         'my-creations': 'tab2',
@@ -124,12 +125,27 @@ export default {
         const isSuccess = await likeImage(imageId, this.accessToken);
 
         if (isSuccess) {
-          // Add imageId to likedImages array
-          this.likedImages.push(imageId);
+          // Toggle liked state
+          this.toggleLiked(imageId);
         }
       } catch (error) {
         // Handle error as needed
       }
+    },
+
+    toggleLiked(imageId) {
+      const index = this.likedImages.indexOf(imageId);
+      if (index === -1) {
+        // If not liked, add to likedImages
+        this.likedImages.push(imageId);
+      } else {
+        // If liked, remove from likedImages
+        this.likedImages.splice(index, 1);
+      }
+    },
+
+    isLiked(imageId) {
+      return this.likedImages.includes(imageId);
     },
 
     async downloadImage(imageUrl) {
@@ -380,7 +396,9 @@ body {
   transition: background 0.3s ease-in-out;
 }
 
-.like-button:hover,
+.like-button:hover {
+  background: #da1010;
+}
 .download-button:hover {
   background: #18bb23;
 }
@@ -392,5 +410,11 @@ body {
 
 .liked {
   color: red;
+  background-color: red;
+  
+}
+
+.liked:hover{
+  background-color: red;
 }
 </style>
