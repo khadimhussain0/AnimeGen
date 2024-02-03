@@ -77,7 +77,7 @@
 import NotificationModal from '@/components/NotificationModal.vue';
 import NotificationMixin from '@/mixins/notificationMixin.js';
 import { generateImages, fetchCommunityImages } from '../services/image_service';
-import { getUsername } from '../services/utils';
+import { getUsername, getCredits } from '../services/utils';
 
 export default {
   mixins: [NotificationMixin],
@@ -92,7 +92,7 @@ export default {
       accessToken: localStorage.getItem('accessToken') || '',
       isLoggedIn: Boolean(localStorage.getItem('accessToken')), // Add isLoggedIn variable
       username: '',
-      credits: 45,
+      credits: 0,
       selectedTab: 'community',
       likedImages: [],
       tabClasses: {
@@ -105,6 +105,7 @@ export default {
   },
   mounted() {
     this.fetchUsername();
+    this.fetchCredits();
   },
   methods: {
     async generateImages() {
@@ -117,6 +118,7 @@ export default {
       try {
         const newImages = await generateImages(this.accessToken, this.prompt, this.negativePrompt);
         this.myImages = [...newImages, ...this.myImages];
+        this.credits = this.fetchCredits()
       } catch (error) {
         console.error("Error generating images:", error);
       } finally {
@@ -190,6 +192,14 @@ export default {
       } catch (error) {
         console.log(error)
         return "User"
+      }
+    },
+    async fetchCredits() {
+      try {
+        this.credits = await getCredits(this.accessToken);
+      } catch (error) {
+        console.log(error)
+        return "0"
       }
     },
     logout() {

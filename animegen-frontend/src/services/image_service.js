@@ -1,11 +1,12 @@
 import axios from 'axios';
+import { orgin } from '@/services/config';
 
 const generateImages = async function (accessToken, prompt, negativePrompt) {
   try {
     const headers = {
       Authorization: `Bearer ${accessToken}`,
     };
-    const response = await axios.post('http://localhost:8000/generate', {
+    const response = await axios.post(`${orgin}/generate`, {
       prompt,
       negativePrompt,
     }, { headers });
@@ -25,7 +26,7 @@ const fetchCommunityImages = async function (accessToken) {
     const headers = {
       Authorization: `Bearer ${accessToken}`,
     };
-    const response = await axios.get('http://localhost:8000/images/', { headers });
+    const response = await axios.get(`${orgin}/images/`, { headers });
 
     return response.data.images.map(image => ({
       url: image.url,

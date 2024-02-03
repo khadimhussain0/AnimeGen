@@ -1,8 +1,9 @@
 import axios from 'axios';
+import { orgin } from '@/services/config';
 
 const getUsername = async function (accessToken) {
   try {
-    const response = await axios.get('http://localhost:8000/user/get_username', {
+    const response = await axios.get(`${orgin}/user/get_username`, {
       headers: {
         Authorization: `Bearer ${accessToken}`
       }
@@ -16,20 +17,33 @@ const getUsername = async function (accessToken) {
   }
 };
 
+const getCredits = async function (accessToken) {
+  try {
+    const response = await axios.get(`${orgin}/credits/`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`
+      }
+    });
+    return response.data.credits;
+  } catch (error) {
+    console.error('Error during fetching credits:', error.message);
+    throw error;
+  }
+};
 
 const likeImage = async function (imageId, accessToken) {
   try {
-    const response = await axios.post(`http://localhost:8000/image/like/${imageId}`, null, {
+    const response = await axios.post(`${orgin}/image/like/${imageId}`, null, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
     });
 
-    return response.data.success; // Assuming the server responds with success field
+    return response.data.success;
   } catch (error) {
     console.error('Error liking image:', error);
     throw error;
   }
 };
 
-export { getUsername, likeImage };
+export { getUsername, getCredits, likeImage };
