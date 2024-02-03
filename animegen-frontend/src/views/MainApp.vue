@@ -17,6 +17,7 @@
         autocomplete="off">
 
       <button @click="generateImages" :disabled="loading" class="generate-button">Generate Images</button>
+      <spinner :loading="loading" />
     </div>
 
 
@@ -75,12 +76,16 @@
 
 <script>
 import NotificationModal from '@/components/NotificationModal.vue';
+import Spinner from "@/components/Spinner.vue"
 import NotificationMixin from '@/mixins/notificationMixin.js';
 import { generateImages, fetchImages } from '../services/image_service';
 import { getUsername, getCredits } from '../services/utils';
 
 export default {
   mixins: [NotificationMixin],
+  components: {
+    Spinner,
+  },
   data() {
     return {
       showNotification: false,
