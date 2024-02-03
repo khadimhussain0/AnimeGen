@@ -41,7 +41,7 @@
 
           <!-- Download Button -->
           <button @click="downloadImage(image.url)" class="download-button">
-            📥
+            <img src="../assets/download-icon.gif" alt="download icon" width="24" height="18" style="border-radius: 5px;">
           </button>
         </div>
       </div>
@@ -62,7 +62,7 @@
 
           <!-- Download Button -->
           <button @click="downloadImage(image.url)" class="download-button">
-            📥
+            <img src="../assets/icons8-herunterladen.gif" alt="download icon" width="24" height="18" style="border-radius: 5px;">
           </button>
         </div>
       </div>
