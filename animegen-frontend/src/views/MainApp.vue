@@ -10,8 +10,10 @@
   <div class="container">
 
     <div class="input-section">
-      <input v-model="prompt" id="prompt" type="text" placeholder="Enter Text Prompt" class="styled-input" autocomplete="off">
-      <input v-model="negativePrompt" id="negativePrompt" type="text" placeholder="Negative Prompt" class="styled-input" autocomplete="off">
+      <input v-model="prompt" id="prompt" type="text" placeholder="Enter Text Prompt" class="styled-input"
+        autocomplete="off">
+      <input v-model="negativePrompt" id="negativePrompt" type="text" placeholder="Negative Prompt" class="styled-input"
+        autocomplete="off">
 
       <button @click="generateImages" :disabled="loading" class="generate-button">Generate Images</button>
     </div>
@@ -26,26 +28,44 @@
       </div>
     </div>
     <div class="image-gallery" v-if="selectedTab === 'community'">
+      <!-- Display Images -->
       <div v-for="image in communityImages" :key="image.id" class="gallery-item">
-        <img :src="image.url" alt="Community Creation" class="gallery-image">
+        <div class="image-container">
+          <div class="image-wrapper">
+            <img :src="image.url" alt="image.id" class="rounded-image">
+          </div>
+          <!-- Like Button -->
+          <button @click="likeImage(image.id)" class="like-button">
+            ❤️
+          </button>
+
+          <!-- Download Button -->
+          <button @click="downloadImage(image.url)" class="download-button">
+            📥
+          </button>
+        </div>
       </div>
     </div>
 
     <div class="image-gallery" v-if="selectedTab === 'my-creations'">
-    <!-- Display Images -->
-    <div v-for="image in myImages" :key="image.id">
-      <img :src="image.url" alt="image.id">
+      <!-- Display Images -->
+      <div v-for="image in myImages" :key="image.id" class="gallery-item">
+        <div class="image-container">
+          <div class="image-wrapper">
+            <img :src="image.url" alt="image.id" class="rounded-image">
+          </div>
 
-      <!-- Like Button -->
-      <button @click="likeImage(image.id)" class="like-button">
-        ❤️
-      </button>
+          <!-- Like Button -->
+          <button @click="likeImage(image.id)" class="like-button">
+            ❤️
+          </button>
 
-      <!-- Download Button -->
-      <button @click="downloadImage(image.url)" class="download-button">
-        📥
-      </button>
-    </div>
+          <!-- Download Button -->
+          <button @click="downloadImage(image.url)" class="download-button">
+            📥
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -316,16 +336,61 @@ body {
   flex: 1 0 30%;
 }
 
-.gallery-image {
+.image-container {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+}
+
+.rounded-image {
+  border-radius: 10px;
   width: 100%;
   height: auto;
-  border-radius: 8px;
-  transition: transform 0.3s;
+  transition: transform 0.3s ease-in-out;
 }
 
-.gallery-image:hover {
-  transform: scale(1.05);
+.rounded-image:hover {
+  transform: scale(1.1);
+  border-radius: 10px;
 }
 
+.like-button {
+  position: absolute;
+  top: 10px;
+  right: 50px;
+  background: #ffffff;
+  border: none;
+  border-radius: 50%;
+  padding: 5px;
+  cursor: pointer;
+  font-size: 18px;
+  transition: background 0.3s ease-in-out;
+}
 
+.download-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #ffffff;
+  border: none;
+  border-radius: 50%;
+  padding: 5px;
+  cursor: pointer;
+  font-size: 18px;
+  transition: background 0.3s ease-in-out;
+}
+
+.like-button:hover,
+.download-button:hover {
+  background: #18bb23;
+}
+
+.image-wrapper {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.liked {
+  color: red;
+}
 </style>
