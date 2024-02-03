@@ -3,7 +3,7 @@ import Auth from '../components/Auth.vue'
 import MainApp from '../views/MainApp.vue';
 
 const routes = [
-  { path: '/:catchAll(.*)', redirect: '/auth' },
+  { path: '/:catchAll(.*)', redirect: '/app', meta: { requiresAuth: true } },
   {path:  '/auth', component : Auth},
   { path: '/app', component: MainApp, meta: { requiresAuth: true } },
 
