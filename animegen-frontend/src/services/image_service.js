@@ -1,34 +1,40 @@
-function processResponse(response) {
-    try {
-      if (!response || !response.images || !Array.isArray(response.images)) {
-        throw new Error("Invalid response format");
-      }
-  
-      const baseUrl = "http://localhost:8000/images/api/v1/";
-  
-      return response.images.map((image) => ({
-        filename: `${baseUrl}${image.filename}`,
-        key: image.key,
-      }));
-    } catch (error) {
-      console.error("Error processing response:", error.message);
-      return [];
-    }
+import axios from 'axios';
+
+const generateImages = async function (accessToken, prompt, negativePrompt) {
+  try {
+    const headers = {
+      Authorization: `Bearer ${accessToken}`,
+    };
+    const response = await axios.post('http://localhost:8000/generate', {
+      prompt,
+      negativePrompt,
+    }, { headers });
+
+    return response.data.images.map(image => ({
+      url: image.url,
+      key: image.key,
+    }));
+  } catch (error) {
+    console.error("Error generating images:", error);
+    throw error;
   }
-  
-  const someresponse = {
-    "message": "success",
-    "images": [
-      {
-        "filename": "image.png",
-        "key": 1
-      },
-      {
-        "filename": "image2.png",
-        "key": 2
-      }
-    ]
-  };
-  
-  const processedResponse = processResponse(someresponse);
-  console.log(processedResponse);
+};
+
+const fetchCommunityImages = async function (accessToken) {
+  try {
+    const headers = {
+      Authorization: `Bearer ${accessToken}`,
+    };
+    const response = await axios.get('http://localhost:8000/images/', { headers });
+
+    return response.data.images.map(image => ({
+      url: image.url,
+      key: image.key,
+    }));
+  } catch (error) {
+    console.error("Error fetching community images:", error);
+    throw error;
+  }
+};
+
+export { generateImages, fetchCommunityImages };

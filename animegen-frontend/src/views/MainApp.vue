@@ -41,6 +41,8 @@
 
 <script>
 import axios from 'axios';
+import { generateImages, fetchCommunityImages } from '../services/image_service';
+import { getUsername } from '../services/utils';
 
 export default {
   data() {
@@ -68,21 +70,19 @@ export default {
       this.loading = true;
 
       try {
-        const headers = {
-          Authorization: `Bearer ${this.accessToken}`,
-        };
-        const response = await axios.post('http://localhost:8000/generate', {
-          prompt: this.prompt,
-          negativePrompt: this.negativePrompt,
-        }, { headers });
-        // Append new image data at the beginning of the existing array
-        this.myImages = [
-          ...response.data.images.map(image => ({
-            url: image.url,
-            key: image.key,
-          })),
-          ...this.myImages, // Add existing images after the new ones
-        ];
+        const newImages = await generateImages(this.accessToken, this.prompt, this.negativePrompt);
+        this.myImages = [...newImages, ...this.myImages];
+      } catch (error) {
+        console.error("Error generating images:", error);
+      } finally {
+        this.loading = false;
+      }
+    },
+    async fetchCommunityImages() {
+      this.loading = true;
+
+      try {
+        this.communityImages = await fetchCommunityImages(this.accessToken);
       } catch (error) {
         console.error("Error generating images:", error);
       } finally {
@@ -91,13 +91,9 @@ export default {
     },
     switchTab(tab) {
       this.selectedTab = tab;
-
-      // Reset classes for all tabs
       Object.keys(this.tabClasses).forEach((key) => {
         this.tabClasses[key] = 'tab2';
       });
-
-      // Set the selected tab's class to 'tab-selected'
       this.tabClasses[tab] = 'tab-selected';
     },
     logout() {
@@ -116,11 +112,9 @@ export default {
           this.username = fullName
           console.log(fullName)
           console.log(this.username)
-          // return fullName
         })
         .catch(error => {
           console.error('Error during fetching username:', error.message);
-          // Handle error as needed
           throw error;
         });
     }
