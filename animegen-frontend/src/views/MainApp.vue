@@ -1,6 +1,7 @@
 <template>
   <div class="header">
-    <div class="logo"><img src="../assets/animegen.png" alt="AnimeGen" width="64" height="64" style="border-radius: 30px; margin-left: 3px;"></div>
+    <div class="logo"><img src="../assets/animegen.png" alt="AnimeGen" width="64" height="64"
+        style="border-radius: 30px; margin-left: 3px;"></div>
     <div class="user-info">
       <span class="username">{{ username }}</span>
       <button @click="logout" class="logout-button">Logout</button>
@@ -17,19 +18,13 @@
 
 
     <div class="tab-sections">
-    <div
-      :class="tabClasses['community']"
-      @click="switchTab('community')"
-    >
-      Community Creations
+      <div :class="tabClasses['community']" @click="switchTab('community')">
+        Community Creations
+      </div>
+      <div :class="tabClasses['my-creations']" @click="switchTab('my-creations')">
+        My Creations
+      </div>
     </div>
-    <div
-      :class="tabClasses['my-creations']"
-      @click="switchTab('my-creations')"
-    >
-      My Creations
-    </div>
-  </div>
     <div class="image-gallery" v-if="selectedTab === 'community'">
       <div v-for="image in communityImages" :key="image.id" class="gallery-item">
         <img :src="image.url" alt="Community Creation" class="gallery-image">
@@ -61,11 +56,11 @@ export default {
         community: 'tab1',
         'my-creations': 'tab2',
       },
-      communityImages: [{"url":"https://picsum.photos/200/300", "key":2},{"url":"https://picsum.photos/500/300", "key":1}],
-      myImages: [{"url":"https://picsum.photos/500/300", "key":2},{"url":"https://picsum.photos/500/300", "key":1}],
+      communityImages: [{ "url": "https://picsum.photos/200/300", "key": 2 }, { "url": "https://picsum.photos/500/300", "key": 1 }],
+      myImages: [{ "url": "https://picsum.photos/500/300", "key": 2 }, { "url": "https://picsum.photos/500/300", "key": 1 }],
     };
   },
-  mounted(){
+  mounted() {
     this.getUsername();
   },
   methods: {
@@ -79,12 +74,15 @@ export default {
         const response = await axios.post('http://localhost:8000/generate', {
           prompt: this.prompt,
           negativePrompt: this.negativePrompt,
-        }, { headers, responseType: 'arraybuffer' });
-
-        if (this.$refs.generatedImage) {
-          this.$refs.generatedImage.src = URL.createObjectURL(new Blob([response.data]));
-        }
-
+        }, { headers });
+        // Append new image data at the beginning of the existing array
+        this.myImages = [
+          ...response.data.images.map(image => ({
+            url: image.url,
+            key: image.key,
+          })),
+          ...this.myImages, // Add existing images after the new ones
+        ];
       } catch (error) {
         console.error("Error generating images:", error);
       } finally {
@@ -113,18 +111,18 @@ export default {
           Authorization: `Bearer ${this.accessToken}`
         }
       })
-      .then(response => {
-        const fullName = `${response.data.firstname} ${response.data.lastname}`;
-        this.username = fullName
-        console.log(fullName)
-        console.log(this.username)
-        // return fullName
-      })
-      .catch(error => {
-        console.error('Error during fetching username:', error.message);
-        // Handle error as needed
-        throw error;
-      });
+        .then(response => {
+          const fullName = `${response.data.firstname} ${response.data.lastname}`;
+          this.username = fullName
+          console.log(fullName)
+          console.log(this.username)
+          // return fullName
+        })
+        .catch(error => {
+          console.error('Error during fetching username:', error.message);
+          // Handle error as needed
+          throw error;
+        });
     }
   },
 };
@@ -161,6 +159,7 @@ body {
   border-bottom-left-radius: 100px;
   padding: 10px;
 }
+
 .logout-button {
   background-color: #d9534f;
   color: white;
@@ -250,18 +249,21 @@ body {
   margin: 5px;
   padding: 10px;
   text-align: center;
-  background: #454141;;
+  background: #454141;
+  ;
   color: #ffffff;
   cursor: pointer;
   transition: background-color 0.3s;
   border-radius: 30px;
 }
+
 .tab2 {
   flex: 1;
   margin: 5px;
   padding: 10px;
   text-align: center;
-  background: #454141;;
+  background: #454141;
+  ;
   color: #ffffff;
   cursor: pointer;
   transition: background-color 0.3s;
