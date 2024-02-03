@@ -26,7 +26,14 @@
           <label for="password">Password</label>
           <input v-model="registerData.password" type="password" id="password" placeholder="Enter your password" required>
         </div>
-        <button type="submit" class="auth-btn">Sign Up</button>
+        <div class="form-group">
+          <label>
+            <input v-model="acceptTerms" type="checkbox" required>
+            <a href="/terms" target="_blank">Terms and Conditions</a>
+          </label>
+
+        </div>
+        <button type="submit" class="auth-btn" :disabled="!acceptTerms">Sign Up</button>
       </form>
 
       <form v-if="!isRegister" @submit.prevent="loginUser">
@@ -36,8 +43,7 @@
         </div>
         <div class="form-group">
           <label for="loginPassword">Password</label>
-          <input v-model="loginData.password" type="password" id="loginPassword" placeholder="Enter your password"
-            required>
+          <input v-model="loginData.password" type="password" id="loginPassword" placeholder="Enter your password" required>
         </div>
         <button type="submit" class="auth-btn">Login</button>
       </form>
@@ -60,7 +66,7 @@ export default {
     return {
       showNotification: false,
       notificationMessage: '',
-      notificationType: 'info', // Default to info type
+      notificationType: 'info',
       isRegister: false,
       registerData: {
         firstname: '',
@@ -72,6 +78,7 @@ export default {
         email: '',
         password: '',
       },
+      acceptTerms: false,
     };
   },
   methods: {
@@ -80,7 +87,7 @@ export default {
         const baseUrl = new URL(BACKEND_API_URL);
         const response = await axios.post(`${baseUrl.origin}/user`, this.registerData);
         console.log('User Registration Response:', response.data);
-        this.showNotificationModal('success', 'Wellcome Aboard!\n Please Login to continue');
+        this.showNotificationModal('success', 'Welcome Aboard!\n Please Login to continue');
         this.isRegister = false;
         this.registerData = {
           firstname: '',
@@ -88,10 +95,9 @@ export default {
           email: '',
           password: '',
         };
-        // this.$router.push('/app');
       } catch (error) {
         console.error('Error creating account:', error.message);
-        this.showNotificationModal('error', 'Error creating acccount');
+        this.showNotificationModal('error', 'Error creating account');
       }
     },
     async loginUser() {
@@ -111,7 +117,7 @@ export default {
         this.$router.push('/app');
       } catch (error) {
         console.error('Login failed', error);
-        this.showNotificationModal('error', 'Login failed please try again');
+        this.showNotificationModal('error', 'Login failed, please try again');
       }
     },
     toggleForm() {
@@ -127,9 +133,6 @@ export default {
   justify-content: center;
   align-items: center;
   padding: 8px;
-  /* min-height: 100vh; */
-  /* background-color: #f4f4f4; */
-
 }
 
 .auth-card {
@@ -141,7 +144,7 @@ export default {
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   background-color: #fff;
   text-align: center;
-
+  background: linear-gradient(90deg, #f441a5, #03a9f4);
 }
 
 .auth-title {
@@ -193,6 +196,17 @@ input {
   transition: background-color 0.3s;
 }
 
+.auth-btn:disabled {
+  color: #fff;
+  background-color: #2196F3;
+  cursor: not-allowed;
+}
+
+.auth-btn:disabled:hover{
+  color: #fff;
+  background-color: #2196F3;
+  cursor: not-allowed;
+}
 .auth-btn:hover {
   background-color: #1769aa;
 }
