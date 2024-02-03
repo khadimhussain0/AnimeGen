@@ -22,12 +22,13 @@ def get_user_credits(
         return {"credits": user_credits.amount} if user_credits else {"credits": 0}
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"An error occurred: {e}")
+        print(e)
+        raise HTTPException(status_code=500, detail="Server Error")
 
 
 @router.post("/add", response_model=dict)
 def add_credits(
-    amount: int,
+    credits: CreditsAddResponse,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
@@ -36,11 +37,12 @@ def add_credits(
         if not user_credits:
             user_credits = Credits(user_id=current_user.id, amount=0)
 
-        user_credits.amount += amount
+        user_credits.amount += credits.amount
         db.add(user_credits)
         db.commit()
 
         return {"message": "Credits added successfully", "credits": user_credits.amount}
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"An error occurred: {e}")
+        print(e)
+        raise HTTPException(status_code=500, detail="Server error")
