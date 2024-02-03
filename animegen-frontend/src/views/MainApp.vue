@@ -76,7 +76,7 @@
 <script>
 import NotificationModal from '@/components/NotificationModal.vue';
 import NotificationMixin from '@/mixins/notificationMixin.js';
-import { generateImages, fetchCommunityImages } from '../services/image_service';
+import { generateImages, fetchImages } from '../services/image_service';
 import { getUsername, getCredits } from '../services/utils';
 
 export default {
@@ -106,6 +106,8 @@ export default {
   mounted() {
     this.fetchUsername();
     this.fetchCredits();
+    this.fetchCommunityImages();
+    this.fetchUserImages();
   },
   methods: {
     async generateImages() {
@@ -129,9 +131,22 @@ export default {
       this.loading = true;
 
       try {
-        this.communityImages = await fetchCommunityImages(this.accessToken);
+        const newImages = await fetchImages(this.accessToken, "community");
+        this.communityImages = [...newImages, ...this.communityImages];
       } catch (error) {
-        console.error("Error generating images:", error);
+        console.error("Error Fetching images:", error);
+      } finally {
+        this.loading = false;
+      }
+    },
+    async fetchUserImages() {
+      this.loading = true;
+
+      try {
+        const newImages = await fetchImages(this.accessToken);
+        this.myImages = [...newImages, ...this.myImages];
+      } catch (error) {
+        console.error("Error Fetching images:", error);
       } finally {
         this.loading = false;
       }

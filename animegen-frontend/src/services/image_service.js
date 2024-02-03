@@ -21,21 +21,28 @@ const generateImages = async function (accessToken, prompt, negativePrompt) {
   }
 };
 
-const fetchCommunityImages = async function (accessToken) {
+const fetchImages = async function (accessToken, audience='') {
   try {
     const headers = {
       Authorization: `Bearer ${accessToken}`,
     };
-    const response = await axios.get(`${orgin}/images/`, { headers });
-
+    if (audience==='community'){
+    const response = await axios.get(`${orgin}/images/community`, { headers });
     return response.data.images.map(image => ({
       url: image.url,
       key: image.key,
     }));
+    }else{
+      const response = await axios.get(`${orgin}/images/`, { headers });
+      return response.data.images.map(image => ({
+        url: image.url,
+        key: image.key,
+      }));
+    }
   } catch (error) {
     console.error("Error fetching community images:", error);
     throw error;
   }
 };
 
-export { generateImages, fetchCommunityImages };
+export { generateImages, fetchImages };
