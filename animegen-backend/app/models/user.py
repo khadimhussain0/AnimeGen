@@ -18,6 +18,7 @@ class User(Base):
 
     prompts = relationship("Prompt", back_populates="user")
     images = relationship("Image", back_populates="user")
+    credits = relationship("Credits", back_populates="user")
 
     def set_password(self, password: str):
         self.hashed_password = pwd_context.hash(password)

@@ -7,6 +7,7 @@ from app.schemas.prompt import InputPrompt
 from app.schemas.image import ImageResponse, GenerateResponse
 from app.models.prompt import Prompt
 from app.models.image import Image
+from app.models.credits import Credits
 from app.core.auth import get_current_user
 from app.core.config import FILE_STORAGE_PATH, SERVER_URL
 from app.services.model_loader import Model
@@ -39,6 +40,16 @@ def generate(
     db.refresh(prompt)
 
     images_info = []
+
+    # Deduct credits after a successful generation
+    credits_to_deduct = 3
+    user_credits = db.query(Credits).filter_by(user_id=current_user.id).first()
+
+    if user_credits and user_credits.amount >= credits_to_deduct:
+        user_credits.amount -= credits_to_deduct
+        db.commit()
+    else:
+        raise HTTPException(status_code=400, detail="Insufficient credits for image generation.")
 
     try:
         model = Model()
