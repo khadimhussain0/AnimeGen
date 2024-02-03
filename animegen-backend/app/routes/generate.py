@@ -8,7 +8,7 @@ from app.schemas.image import ImageResponse, GenerateResponse
 from app.models.prompt import Prompt
 from app.models.image import Image
 from app.core.auth import get_current_user
-from app.core.config import FILE_STORAGE_PATH
+from app.core.config import FILE_STORAGE_PATH, SERVER_URL
 from app.services.model_loader import Model
 
 
@@ -58,6 +58,7 @@ def generate(
             image_extension = "png"
             separater = "___"
             image_filename = f"{prompt_data.prompt}{separater}{image_uuid}.{image_extension}"
+            url = f"{SERVER_URL}/images/api/v1/{image_filename}"
             image_path = f"{FILE_STORAGE_PATH}/{image_filename}"
             image.save(image_path)
 
@@ -81,6 +82,7 @@ def generate(
             # Append image information to the list for the response
             images_info.append(ImageResponse(
                 filename=image_filename,
+                url=url,
                 key=image_id,
             ))
 

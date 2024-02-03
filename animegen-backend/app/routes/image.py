@@ -7,7 +7,7 @@ from app.models.image import Image
 from app.core.auth import get_current_user
 from fastapi.responses import StreamingResponse
 from app.schemas.image import GenerateResponse
-from app.core.config import FILE_STORAGE_PATH
+from app.core.config import FILE_STORAGE_PATH, SERVER_URL
 
 router = APIRouter(
     prefix="/images",
@@ -26,7 +26,8 @@ def get_user_images(
         images_info = []
         for i, image in enumerate(user_images):
             filename = f"{image.filename}{image.separater}{image.uuid}.{image.extension}"
-            images_info.append({"filename": filename, "key": image.id})
+            url = f"{SERVER_URL}/images/api/v1/{filename}"
+            images_info.append({"filename": filename, "url": url, "key": image.id})
 
         return GenerateResponse(message="Fetched all images.", images=images_info)
 
