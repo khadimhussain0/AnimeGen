@@ -128,6 +128,7 @@ export default {
         this.credits = this.fetchCredits()
       } catch (error) {
         console.error("Error generating images:", error);
+        this.showNotificationModal('info', 'Not Enough Credits');
       } finally {
         this.loading = false;
       }

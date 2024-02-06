@@ -104,4 +104,3 @@ def generate(
 
     return GenerateResponse(message="Images generated and saved successfully.", images=images_info)
 
-
