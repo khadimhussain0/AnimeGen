@@ -1,0 +1,39 @@
+version: '3'
+services:
+  backend:
+    build: ./animegen-backend
+    ports:
+      - "8000:8000"
+    depends_on:
+      - database
+    environment:
+      DATABASE_URL: "postgresql://postgres:root@database:5432/animegen"
+    volumes:
+      - ./backenddata:/app
+    networks:
+      - backend_network
+
+  frontend:
+    build: ./animegen-frontend
+    ports:
+      - "3000:3000"
+    networks:
+      - backend_network
+
+  database:
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: animegen
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - backend_network
+
+networks:
+  backend_network:
+
+volumes:
+  pgdata:
+  backenddata:

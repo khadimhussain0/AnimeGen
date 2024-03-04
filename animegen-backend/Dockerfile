@@ -6,7 +6,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 
-RUN mkdir -p /var/log/supervisor /var/log/celestixai
+RUN mkdir -p /var/log/supervisor /var/log/animegen
 
 WORKDIR /app
 
