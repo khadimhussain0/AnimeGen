@@ -128,7 +128,11 @@ export default {
         this.credits = this.fetchCredits()
       } catch (error) {
         console.error("Error generating images:", error);
+        if (this.credits<2){
         this.showNotificationModal('info', 'Not Enough Credits');
+        }else{
+          this.showNotificationModal('info', 'Image Generation Model Under Heavy Load\nTry Again!');
+        }
       } finally {
         this.loading = false;
       }
