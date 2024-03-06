@@ -10,7 +10,8 @@ from app.models.image import Image
 from app.models.credits import Credits
 from app.core.auth import get_current_user
 from app.core.config import FILE_STORAGE_PATH, SERVER_URL
-from app.services.model_loader import Model
+from app.services.model_loader import AnimeGen
+
 
 
 router = APIRouter(
@@ -52,9 +53,10 @@ def generate(
         raise HTTPException(status_code=400, detail="Insufficient credits for image generation.")
 
     try:
-        model = Model()
+        from app.main import ANIMEGEN
+        model = ANIMEGEN
         # images will be a list of PIL.Image objects, so it can contain one or more than one image
-        images = model.predict(
+        images = model.generate(
             prompt=prompt_data.prompt,
             negative_prompt=prompt_data.negative_prompt,
             width=prompt_data.width,
