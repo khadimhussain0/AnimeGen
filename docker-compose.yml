@@ -12,6 +12,13 @@ services:
       - backenddata:/app
     networks:
       - backend_network
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
 
   frontend:
     build: ./animegen-frontend
