@@ -12,7 +12,7 @@ DB_PORT = os.getenv("DB_PORT", "5432")
 DB_NAME = os.getenv("DB_NAME", "animegen")
 DATABASE_URL: str = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 
-SERVER_URL: str = "http://backend:8000"
+SERVER_URL: str = "http://localhost:8000"
 
 FILE_STORAGE_PATH: str = os.path.join(os.getcwd(), "image_store")
 if not os.path.exists(FILE_STORAGE_PATH):
