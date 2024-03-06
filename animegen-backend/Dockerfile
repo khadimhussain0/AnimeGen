@@ -7,7 +7,7 @@ RUN apt-get update && \
 
 
 RUN mkdir -p /var/log/supervisor /var/log/animegen
-
+ENV PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
 WORKDIR /app
 
 COPY ./requirements.txt .
@@ -15,6 +15,10 @@ COPY ./requirements.txt .
 RUN pip install -r requirements.txt
 RUN pip install "fastapi[all]"
 RUN pip install pydantic==1.10.13
+RUN pip uninstall -y torch
+RUN pip uninstall -y torchvision
+RUN pip install torch torchvision --index-url https://download.pytorch.org/whl/cu118
+
 
 
 COPY . .
