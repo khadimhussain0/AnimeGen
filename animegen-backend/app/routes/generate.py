@@ -20,13 +20,15 @@ router = APIRouter(
     tags=["Generate Animes"],
 )
 
+anime_gen_instance= AnimeGen()
 
 @router.post("/", response_model=GenerateResponse)
 def generate(
     prompt_data: InputPrompt,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user)
+    current_user: User = Depends(get_current_user),
 ):
+    global anime_gen_instance
     # Saving prompt data in the Prompt table
     prompt = Prompt(
         user_id=current_user.id,
@@ -54,9 +56,8 @@ def generate(
         raise HTTPException(status_code=400, detail="Insufficient credits for image generation.")
 
     try:
-        model = AnimeGen()
         # images will be a list of PIL.Image objects, so it can contain one or more than one image
-        images = model.generate(
+        images = anime_gen_instance.generate(
             prompt=prompt_data.prompt,
             negative_prompt=prompt_data.negative_prompt,
             width=prompt_data.width,
@@ -65,7 +66,6 @@ def generate(
             num_inference_steps=prompt_data.num_inference_steps
         )
 
-        del model
         torch.cuda.empty_cache()
         
         # Save images in a directory with UUID and extension, and store the information in the Image table
@@ -73,8 +73,8 @@ def generate(
             image_uuid = str(uuid.uuid4())
             image_extension = "png"
             separater = "___"
-            prompt = str(prompt_data.prompt).replace('/', '_').replace('\\', '_')
-            image_filename = f"{prompt}{separater}{image_uuid}.{image_extension}"
+            process_prompt = str(prompt_data.prompt).replace('/', '_').replace('\\', '_')
+            image_filename = f"{process_prompt}{separater}{image_uuid}.{image_extension}"
             url = f"{SERVER_URL}/images/api/v1/{image_filename}"
             image_path = f"{FILE_STORAGE_PATH}/{image_filename}"
             image.save(image_path)
@@ -87,7 +87,7 @@ def generate(
                 width=image.width,
                 height=image.height,
                 extension=image_extension,
-                filename=prompt,
+                filename=process_prompt,
                 separater=separater
             )
             db.add(db_image)
