@@ -11,6 +11,7 @@ from app.models.credits import Credits
 from app.core.auth import get_current_user
 from app.core.config import FILE_STORAGE_PATH, SERVER_URL
 from app.services.model_loader import AnimeGen
+import torch
 
 
 
@@ -53,8 +54,7 @@ def generate(
         raise HTTPException(status_code=400, detail="Insufficient credits for image generation.")
 
     try:
-        from app.main import ANIMEGEN
-        model = ANIMEGEN
+        model = AnimeGen()
         # images will be a list of PIL.Image objects, so it can contain one or more than one image
         images = model.generate(
             prompt=prompt_data.prompt,
@@ -64,13 +64,17 @@ def generate(
             guidance_scale=prompt_data.guidance_scale,
             num_inference_steps=prompt_data.num_inference_steps
         )
+
+        del model
+        torch.cuda.empty_cache()
         
         # Save images in a directory with UUID and extension, and store the information in the Image table
         for i, image in enumerate(images):
             image_uuid = str(uuid.uuid4())
             image_extension = "png"
             separater = "___"
-            image_filename = f"{prompt_data.prompt}{separater}{image_uuid}.{image_extension}"
+            prompt = str(prompt_data.prompt).replace('/', '_').replace('\\', '_')
+            image_filename = f"{prompt}{separater}{image_uuid}.{image_extension}"
             url = f"{SERVER_URL}/images/api/v1/{image_filename}"
             image_path = f"{FILE_STORAGE_PATH}/{image_filename}"
             image.save(image_path)
@@ -83,7 +87,7 @@ def generate(
                 width=image.width,
                 height=image.height,
                 extension=image_extension,
-                filename=prompt_data.prompt,
+                filename=prompt,
                 separater=separater
             )
             db.add(db_image)

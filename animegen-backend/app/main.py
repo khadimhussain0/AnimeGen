@@ -3,17 +3,13 @@ from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 from app.routes import user, login, generate, image, credits
 from app.core.database import engine, Base
-from app.services.model_loader import AnimeGen
 
-ANIMEGEN = None
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     global ANIMEGEN
     Base.metadata.create_all(bind=engine)
-    ANIMEGEN = AnimeGen()
-    ANIMEGEN.generate("cute anime")
     yield
 
 app = FastAPI(

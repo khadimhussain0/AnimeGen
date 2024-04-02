@@ -22,16 +22,18 @@ class AnimeGen:
         return [image]
 
 
-anime_gen = AnimeGen()
-prompt = "1girl, arima kana, oshi no ko, solo, upper body, v, smile, looking at viewer, outdoors, night"
-negative_prompt = "nsfw, lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry, artist name"
 
-image = anime_gen.generate(prompt, negative_prompt=negative_prompt)
+if __name__=="__main__":
+    anime_gen = AnimeGen()
+    prompt = "1girl, arima kana, oshi no ko, solo, upper body, v, smile, looking at viewer, outdoors, night"
+    negative_prompt = "nsfw, lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry, artist name"
+
+    image = anime_gen.generate(prompt, negative_prompt=negative_prompt)
 
 
-class Model:
-    def predict(cls, prompt: str, negative_prompt, width, height, guidance_scale, num_inference_steps):
-        print(prompt)
-        img = Image.open(r"img.png")
-        img2 = Image.open(r"deploy.png")
-        return [img2, img]
+    class Model:
+        def predict(cls, prompt: str, negative_prompt, width, height, guidance_scale, num_inference_steps):
+            print(prompt)
+            img = Image.open(r"img.png")
+            img2 = Image.open(r"deploy.png")
+            return [img2, img]
