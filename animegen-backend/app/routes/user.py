@@ -2,8 +2,10 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.core.database import get_db
 from app.models.user import User
+from app.models.credits import Credits
 from app.schemas.user import UserCreate, UserRead, UserUpdate
 from app.core.auth import get_current_user
+from app.core.config import DEFAULT_CREDITS
 
 
 router = APIRouter(
@@ -21,6 +23,13 @@ def create_user(user: UserCreate, db: Session = Depends(get_db)):
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
+
+    # New user gets 1000 default credits
+    default_credits = Credits(user_id=db_user.id, amount=DEFAULT_CREDITS)
+    db.add(default_credits)
+    db.commit()
+
+
     return db_user
 
 
