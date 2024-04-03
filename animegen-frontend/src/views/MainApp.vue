@@ -98,14 +98,14 @@ export default {
       isLoggedIn: Boolean(localStorage.getItem('accessToken')), // Add isLoggedIn variable
       username: '',
       credits: 0,
-      selectedTab: 'community',
+      selectedTab: 'my-creations',
       likedImages: [],
       tabClasses: {
         community: 'tab1',
         'my-creations': 'tab2',
       },
-      communityImages: [{ "url": "https://picsum.photos/200/300", "key": 2 }, { "url": "https://picsum.photos/500/300", "key": 1 }],
-      myImages: [{ "url": "https://picsum.photos/500/300", "key": 2 }, { "url": "https://picsum.photos/500/300", "key": 1 }],
+      communityImages: [],
+      myImages: [],
     };
   },
   mounted() {
@@ -197,7 +197,7 @@ export default {
         // Create a link element with download attribute and trigger a click event
         const link = document.createElement('a');
         link.href = window.URL.createObjectURL(blob);
-        link.download = 'downloaded_image.png';
+        link.download = 'animegen.png';
         link.click();
       } catch (error) {
         console.error('Error downloading image:', error);
