@@ -5,6 +5,9 @@ SECRET_KEY = "supersecritkey"
 ALGORITHM = "HS256"
 TOKEN_EXP = timedelta(days=7)
 
+CREDITS_PER_IMAGE = 0
+DEFAULT_CREDITS = 1000
+
 DB_USER = os.getenv("DB_USER", "postgres")
 DB_PASSWORD = os.getenv("DB_PASSWORD", "root")
 DB_HOST = os.getenv("DB_HOST", "database")
